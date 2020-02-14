@@ -41,22 +41,21 @@ $tempCols = [
 		],
 	],
 
-
-	'tx_rkwregistration_title' => [
-		'label'=>'LLL:EXT:rkw_registration/Resources/Private/Language/locallang_db.xlf:tx_rkwregistration_domain_model_frontenduser.tx_rkwregistration_title',
-		'exclude' => 0,
-		'config' => [
-			'type' => 'select',
-			'renderType' => 'selectSingle',
-			'foreign_table' => 'tx_rkwregistration_domain_model_title',
-			'foreign_table_where' => 'AND tx_rkwregistration_domain_model_title.hidden = 0 AND tx_rkwregistration_domain_model_title.deleted = 0 ORDER BY name ASC',
-			'minitems' => 0,
-			'maxitems' => 1,
-			'items' => [
-				['LLL:EXT:rkw_registration/Resources/Private/Language/locallang_db.xlf:tx_rkwregistration_domain_model_frontenduser.tx_rkwregistration_title.I.neutral', 0],
-			],
-		],
-	],
+    'tx_rkwregistration_title' => [
+        'label'=>'LLL:EXT:rkw_registration/Resources/Private/Language/locallang_db.xlf:tx_rkwregistration_domain_model_frontenduser.tx_rkwregistration_title',
+        'exclude' => 0,
+        'config' => [
+            'type' => 'select',
+            'renderType' => 'selectSingle',
+            'foreign_table' => 'tx_rkwregistration_domain_model_title',
+            'foreign_table_where' => 'AND tx_rkwregistration_domain_model_title.hidden = 0 AND tx_rkwregistration_domain_model_title.deleted = 0 ORDER BY name ASC',
+            'MM' => 'tx_rkwregistration_title_record_mm',
+            'MM_opposite_field' => 'items',
+            'MM_match_fields' => [
+                'tablenames' => 'fe_users',
+            ],
+        ],
+    ],
 
 	'tx_rkwregistration_twitter_id' => [
         'label'=>'LLL:EXT:rkw_registration/Resources/Private/Language/locallang_db.xlf:tx_rkwregistration_domain_model_frontenduser.tx_rkwregistration_twitter_id',
