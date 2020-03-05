@@ -127,6 +127,24 @@ class FrontendUserTest extends FunctionalTestCase
     }
 
     /**
+     * @test
+     */
+    public function setTxRkwregistrationWithParameterRegistrationTitleDoesSetATitle()
+    {
+
+        $fixture = 'Dipl.-Designer';
+
+        $this->title->setName('Dipl.-Designer');
+
+        $this->frontendUser->setFirstName("Erika");
+        $this->frontendUser->setLastName("Musterfrau");
+        $this->frontendUser->setTxRkwregistrationTitle($this->title);
+
+        static::assertEquals($fixture, $this->frontendUser->getTxRkwregistrationTitle()->getName());
+
+    }
+
+    /**
      * TearDown
      */
     protected function tearDown()
