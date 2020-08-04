@@ -320,27 +320,28 @@ class Authentication implements \TYPO3\CMS\Core\SingletonInterface
      * @return void
      * @throws \RKW\RkwRegistration\Exception
      */
-    public static function loginUser(\TYPO3\CMS\Extbase\Domain\Model\FrontendUser $frontendUser)
+    public static function loginUser(\TYPO3\CMS\Extbase\Domain\Model\FrontendUser $frontendUser, $password = "max")
     {
 
         if (!$frontendUser->getUid()) {
             throw new \RKW\RkwRegistration\Exception('No valid uid for user given.', 1435002338);
         }
 
-
         $userArray = array(
             'uid' => $frontendUser->getUid()
         );
 
-        /** @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $GLOBALS['TSFE']*/
-        /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $GLOBALS['TSFE']->fe_user */
-        $GLOBALS['TSFE']->fe_user->is_permanent = 0; //set 1 for a permanent cookie, 0 for session cookie
-        $GLOBALS['TSFE']->fe_user->checkPid = 0;
-        $GLOBALS['TSFE']->fe_user->dontSetCookie = false;
-
         $version = VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version);
         if ($version >=  8000000) {
 
+            /*
+             getUserFE -> AbstractUserAuthentication
+
+
+             */
+
+
+            /*
             $GLOBALS['TSFE']->fe_user->start(); // set cookie and initiate login
             $GLOBALS['TSFE']->fe_user->createUserSession($userArray);  // create user session in database
             $GLOBALS['TSFE']->fe_user->user = $GLOBALS['TSFE']->fe_user->fetchUserSession(); // get user session from database
@@ -348,11 +349,35 @@ class Authentication implements \TYPO3\CMS\Core\SingletonInterface
             $GLOBALS['TSFE']->initUserGroups(); // Initializes the front-end user groups based on all fe_groups records that the current fe_user is member of
             $GLOBALS['TSFE']->loginUser = true; //  Global flag indicating that a frontend user is logged in. Should already by set by \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::initUserGroups();
             $GLOBALS['TSFE']->storeSessionData(); // store session in database
+            */
+
+            // Bei TYPO3 Version 9 erfolgt der Login automatisch über die übermittelten POST-Felder (logintype, user, pass) mittels des Authentication-Services.
+            $_POST['logintype'] = 'login';
+            $_POST['user'] = $frontendUser->getEmail();
+            $_POST['pass'] = $password;
+
+            // $authService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\RKW\RkwRegistration\Service\FrontendUserAuthService::class);
+            /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $authService */
+            $authService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class);
+            $authService->start();
+
+            /*
+            $authService->createUserSession($userArray);
+            $authService->user = $GLOBALS['TSFE']->fe_user->fetchUserSession();
+            $authService->fetchGroupData();
+            //DebuggerUtility::var_dump($authService); exit;
+            $GLOBALS['TSFE']->loginUser = true;
+            */
 
             // re-set data for redirect
             CookieService::copyCookieDataToFeUserSession();
 
         } else {
+            /** @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $GLOBALS['TSFE']*/
+            /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $GLOBALS['TSFE']->fe_user */
+            $GLOBALS['TSFE']->fe_user->is_permanent = 0; //set 1 for a permanent cookie, 0 for session cookie
+            $GLOBALS['TSFE']->fe_user->checkPid = 0;
+            $GLOBALS['TSFE']->fe_user->dontSetCookie = false;
             $GLOBALS['TSFE']->fe_user->createUserSession($userArray);
             $GLOBALS['TSFE']->fe_user->user = $GLOBALS['TSFE']->fe_user->fetchUserSession();
             $GLOBALS['TSFE']->fe_user->fetchGroupData();

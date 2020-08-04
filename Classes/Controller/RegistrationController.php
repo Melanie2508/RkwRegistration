@@ -4,6 +4,7 @@ namespace RKW\RkwRegistration\Controller;
 
 use RKW\RkwRegistration\Tools\Password;
 use RKW\RkwRegistration\Tools\Authentication;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -1162,6 +1163,7 @@ class RegistrationController extends ControllerAbstract
 
             /** @var \RKW\RkwRegistration\Tools\RedirectLogin $redirectLogin */
             $redirectLogin = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('RKW\\RkwRegistration\\Tools\\RedirectLogin');
+
             if ($url = $redirectLogin->getRedirectUrlLogin()) {
                 $this->redirectToUri($url);
             }

@@ -119,6 +119,31 @@ call_user_func(
         );
 
 
+        //=================================================================
+        // AuthService
+        //=================================================================
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService(
+            $extKey,
+            'auth',
+            RKW\RkwRegistration\Service\FrontendUserAuthService::class,
+            array(
+                'title' => 'Authentication Service for fe_users',
+                'description' => 'Authentication Service for fe_users',
+                //'subtype' => 'authUserFE,getGroupsFE,getUserFE,processLoginDataFE',
+                'subtype' => 'authUserFE, getUserFE',
+                'available' => true,
+                'priority' => 80,
+                'quality' => 80,
+                'os' => '',
+                'exec' => '',
+                'className' => RKW\RkwRegistration\Service\FrontendUserAuthService::class
+            )
+        );
+
+        $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup']['FE_alwaysFetchUser'] = true;
+        $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup']['FE_alwaysAuthUser'] = true;
+
+
     },
     $_EXTKEY
 );
