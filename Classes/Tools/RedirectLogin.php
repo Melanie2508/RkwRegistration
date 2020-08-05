@@ -5,6 +5,7 @@ namespace RKW\RkwRegistration\Tools;
 use \RKW\RkwBasics\Helper\Common;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use RKW\RkwBasics\Service\CookieService;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -165,7 +166,6 @@ class RedirectLogin implements \TYPO3\CMS\Core\SingletonInterface
                 $authentication = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('RKW\\RkwRegistration\\Tools\\Authentication');
                 $params[] = 'tx_rkwregistration_rkwregistration[xdlToken]=' . $authentication->setCrossDomainLoginToken($baseUrl);
 
-
                 // 1.3 Check if there is a referrer given. If so we take this as further redirect param.
                 $redirectUrl = '';
                 if (
@@ -173,7 +173,6 @@ class RedirectLogin implements \TYPO3\CMS\Core\SingletonInterface
                     && ($checkedRedirectUrl = $this->checkRedirectUrl($referrerUrl))
                 ) {
                     $params[] = 'tx_rkwregistration_rkwregistration[xdlRedirect]=' . urlencode($checkedRedirectUrl);
-
 
                     // if no referrer is given, we take the welcome page
                 } else {
@@ -224,7 +223,6 @@ class RedirectLogin implements \TYPO3\CMS\Core\SingletonInterface
             CookieService::removeKey('rkw_registration_redirect_referrer');
 
         }
-
         return $url;
         //===
 

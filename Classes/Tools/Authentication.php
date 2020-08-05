@@ -322,6 +322,7 @@ class Authentication implements \TYPO3\CMS\Core\SingletonInterface
      */
     public static function loginUser(\TYPO3\CMS\Extbase\Domain\Model\FrontendUser $frontendUser, $password = "max")
     {
+        // @toDo: We need to set the cleartext password in the RegistrationController (also on redirect logins)
 
         if (!$frontendUser->getUid()) {
             throw new \RKW\RkwRegistration\Exception('No valid uid for user given.', 1435002338);
@@ -351,6 +352,8 @@ class Authentication implements \TYPO3\CMS\Core\SingletonInterface
             $GLOBALS['TSFE']->storeSessionData(); // store session in database
             */
 
+            $GLOBALS['TSFE']->storeSessionData();
+
             // Bei TYPO3 Version 9 erfolgt der Login automatisch über die übermittelten POST-Felder (logintype, user, pass) mittels des Authentication-Services.
             $_POST['logintype'] = 'login';
             $_POST['user'] = $frontendUser->getEmail();
@@ -360,6 +363,20 @@ class Authentication implements \TYPO3\CMS\Core\SingletonInterface
             /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $authService */
             $authService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class);
             $authService->start();
+
+            /*
+            $authService->is_permanent = 1;
+            $authService->checkPid = 0;
+            $authService->dontSetCookie = false;
+            $authService->loginSessionStarted = true;
+            */
+
+            // it seems that we have subsequently the problem, that we need a logged user now
+            // (may be a standard cookie Problem: Is set after new page load)
+            // so copy the authentication now to TSFE (is the same thing)
+            // We need this because an error occured in setCrossDomainLoginToken (there we cannot read the userId)
+            $GLOBALS['TSFE']->fe_user = $authService;
+
 
             /*
             $authService->createUserSession($userArray);

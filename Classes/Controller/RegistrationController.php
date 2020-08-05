@@ -1241,7 +1241,9 @@ class RegistrationController extends ControllerAbstract
             /** @var \RKW\RkwRegistration\Tools\Authentication $authentication */
             $authentication = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('RKW\\RkwRegistration\\Tools\\Authentication');
             if ($frontendUser = $authentication->validateCrossDomainLoginToken($xdlToken)) {
+
                 $authentication->loginUser($frontendUser);
+
                 $error = false;
 
                 // 2. if there is a valid redirect, go for it!
@@ -1250,6 +1252,10 @@ class RegistrationController extends ControllerAbstract
                     /** @var \RKW\RkwRegistration\Tools\RedirectLogin $redirectLogin */
                     $redirectLogin = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('RKW\\RkwRegistration\\Tools\\RedirectLogin');
                     if ($url = $redirectLogin->checkRedirectUrl($xdlRedirect)) {
+                        $version = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version);
+                        if ($version >=  8000000) {
+                            setcookie('fe_typo_user', $GLOBALS['TSFE']->fe_user->id, null, "/");
+                        }
                         $this->redirectToUri($url);
                     } else {
                         $error = true;
