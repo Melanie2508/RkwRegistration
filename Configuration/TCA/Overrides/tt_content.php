@@ -22,6 +22,12 @@ defined('TYPO3_MODE') || die('Access denied.');
     'RKW Registration Info'
 );
 
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+    'RKW.RkwRegistration',
+    'GoBack',
+    'RKW Registration: Zurück (Redirect-URL)'
+);
+
 //=================================================================
 // Add Flexform
 //=================================================================

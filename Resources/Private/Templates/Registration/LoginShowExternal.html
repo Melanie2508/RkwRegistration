@@ -12,16 +12,27 @@
 
                 <div class="alternatives">
 
-                    <div class="alternatives__item">
-                        <f:link.page
-                            class="btn btn--primary"
-                            pageUid="{settings.users.loginPid}"
-                            noCacheHash="true"
-                            target="_blank"
-                        >
-                            <f:translate key="templates_registration_loginShowExternal.login2" />
-                        </f:link.page>
-                    </div>
+                    <f:comment>
+
+                        <div class="alternatives__item">
+                            <f:link.page
+                                class="btn btn--primary"
+                                pageUid="{settings.users.loginPid}"
+                                noCacheHash="true"
+                                target="_blank"
+                            >
+                                <f:translate key="templates_registration_loginShowExternal.login2" />
+                            </f:link.page>
+                        </div>
+                    </f:comment>
+
+                    <f:link.external
+                        class="btn btn--primary"
+                        uri='<vh:link.customLink sysDomainUid="{settings.users.myRkwSysDomain}" pageUid="{settings.users.loginPid}" additionalParams="{linkParams}" />'
+                        target="{linkTargetLogin}"
+                    >
+                        <f:translate key="templates_registration_loginShowExternal.login2" />
+                    </f:link.external>
 
                     <div class="alternatives__item alternatives__item--between">
                         <f:translate key="templates_registration_loginShowExternal.orLabel" />
@@ -39,14 +50,26 @@
                                 </f:link.action>
                             </f:then>
                             <f:else>
-                                <f:link.page
+                                <f:comment>
+                                    <f:link.page
+                                        class="btn btn--secondary"
+                                        pageUid="{settings.users.logoutPid}"
+                                        noCacheHash="true"
+                                        target="{linkTargetLogout}"
+                                    >
+                                        <f:translate key="templates_registration_loginShowExternal.logout" />
+                                    </f:link.page>
+                                </f:comment>
+
+
+                                <f:link.external
                                     class="btn btn--secondary"
-                                    pageUid="{settings.users.logoutPid}"
-                                    noCacheHash="true"
+                                    uri='<vh:link.customLink sysDomainUid="{settings.users.myRkwSysDomain}" pageUid="{settings.users.logoutPid}" additionalParams="{linkParams}" />'
                                     target="{linkTargetLogout}"
                                 >
                                     <f:translate key="templates_registration_loginShowExternal.logout" />
-                                </f:link.page>
+                                </f:link.external>
+
                             </f:else>
                         </f:if>
                     </div>
@@ -61,18 +84,31 @@
                         <!-- with anonymous login -->
                         <div class="alternatives">
 
-                            <div class="alternatives__item">
 
+
+                            <div class="alternatives__item">
                                 <h3 class="h5"><f:translate key="templates_registration_loginShowExternal.loginLabel" /></h3>
-                                <f:link.page
+
+                                <f:comment>
+                                    <f:link.page
+                                        class="btn btn--primary"
+                                        pageUid="{settings.users.loginPid}"
+                                        noCacheHash="true"
+                                        additionalParams="{linkParams}"
+                                        target="{linkTargetLogin}"
+                                    >
+                                        <f:translate key="templates_registration_loginShowExternal.login" />
+                                    </f:link.page>
+                                </f:comment>
+
+                                <f:link.external
                                     class="btn btn--primary"
-                                    pageUid="{settings.users.loginPid}"
-                                    noCacheHash="true"
-                                    additionalParams="{linkParams}"
+                                    uri='<vh:link.customLink sysDomainUid="{settings.users.myRkwSysDomain}" pageUid="{settings.users.loginPid}" additionalParams="{linkParams}" />'
                                     target="{linkTargetLogin}"
                                 >
                                     <f:translate key="templates_registration_loginShowExternal.login" />
-                                </f:link.page>
+                                </f:link.external>
+
 
                                 <h3 class="h5"><f:translate key="templates_registration_loginShowExternal.registerLabel" /></h3>
                                 <f:link.page

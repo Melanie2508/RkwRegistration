@@ -47,6 +47,18 @@ call_user_func(
             )
         );
 
+        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+            'RKW.' . $extKey,
+            'GoBack',
+            array(
+                'Registration' => 'goBack'
+            ),
+            // non-cacheable actions
+            array(
+                'Registration' => 'goBack'
+            )
+        );
+
         //=================================================================
         // Register CommandController
         //=================================================================
