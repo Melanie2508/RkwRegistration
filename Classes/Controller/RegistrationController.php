@@ -203,6 +203,9 @@ class RegistrationController extends ControllerAbstract
             )
         );
 
+        if ($this->settings['users']['welcomePid']) {
+            $this->redirect('welcome', null, null, null, $this->settings['users']['welcomePid']);
+        }
 
 
         $this->redirect('editUser');
